@@ -1,4 +1,6 @@
-const ContactInfo = require("./ContactInfo")
+const ContactInfo = require("./ContactInfo");
+const NotFoundError = require("./error/NotFoundError");
+const ValidationError = require("./error/ValidationError");
 class Contact {
     static ID = 1
     constructor(contactName, country,email) {
@@ -10,6 +12,10 @@ class Contact {
       
     }
     updateContact(parameter,newValue){
+    try{
+      if(typeof newValue != 'string'){
+        throw new  ValidationError("new value must be string")
+    }
       switch(parameter){
         case "contactName" :  
         this.contactName = newValue
@@ -21,56 +27,98 @@ class Contact {
         this.email = newValue
         return this
         default:
-          return "Invalid Parameter"
+          throw new  Error("Error in UpdateContact Default")
       }
     }
+    catch(rasi){
+      console.log(rasi);
+      console.log(rasi.message);
+      
+    }
+    }
     createContactInfo(typeofContactInfo, valueOfContactInfo) {
-      if(this.isAdmin){return "Admin cannot create contacts"}
+      try{
+        //if(this.isAdmin){return "Admin cannot create contacts"}
       let contactInfoObj = new ContactInfo(typeofContactInfo, valueOfContactInfo);
       this.contactInfo.push(contactInfoObj);
       return contactInfoObj;
       // let contactDetailsObj = new typeOfContactDetails()
       // this.contactDetails.push(contactDetailsObj)
+      }
+      catch(DipikaAdak){
+        console.log(DipikaAdak);
+        console.log(DipikaAdak.message);
+      }
+      
     }
 
      findContactInfo(contactInfoID){
-      for (let i=0; i < this.contactInfo.length; i++) {
+      try{
+        for (let i=0; i < this.contactInfo.length; i++) {
           if (this.contactInfo[i].id == contactInfoID){
-              return [i, true]
+              return [i]
           }
       }
-      return [-1, false]
+      throw new NotFoundError("Error in Contact Details")
+      }
+      catch(nishu){
+        console.log(nishu);
+        console.log(nishu.message);
+      }
+      
+
   }
      updateContactInfo(contactInfoID, typeofContactInfo, valueOfContactInfo) {
         
-      let [indexOfContact, isContactExist] = this.findContactInfo(contactInfoID);
-      if (!isContactExist) {
-          return "Contact Does not Exist";
-      }
-
+     try{
+      let [indexOfContact] = this.findContactInfo(contactInfoID);
+      // if (!isContactExist) {
+      //     return "Contact Does not Exist";
+      // }
       return this.contactInfo[indexOfContact].updateContactInfo(typeofContactInfo, valueOfContactInfo)
-  
+     }
+     catch(rasikapatil){
+      throw rasikapatil
+  }
+
 }
     deleteContactInfo(contactInfoID) {
-
-      let [indexOfContact, isContactExist] = this.findContactInfo(contactInfoID);
-      if (!isContactExist) {
-          return "Contact Does not Exist";
-      }
+     try{
+      let [indexOfContact] = this.findContactInfo(contactInfoID);
+      // if (!isContactExist) {
+      //   throw new  NotFoundError("Contact Does not Exist");
+      // }
       this.contactInfo.splice(indexOfContact, 1)
       return this.contactInfo
+     }
+     catch(hiebuddy){
+      console.log(hiebuddy);
+      console.log(hiebuddy.message);
+     }
 }
 
 getAllContactInfo(){
+  try{
   return this.contactInfo
+}
+  catch(a){
+    console.log(a);
+    console.log(a.message);
+  }
 }
 
     getContactInfoByID(contactInfoID){
-      let [indexOfContact, isContactExist] = this.findContactInfo(contactInfoID);
-      if (!isContactExist){
-        return "Contact Info ID invalid"
-      }
+      try{
+        let [indexOfContact] = this.findContactInfo(contactInfoID);
+      // if (!isContactExist){
+      //   throw new ValidationError ("Contact Info ID invalid")
+      // }
       return this.contactInfo[indexOfContact]
+      }
+      catch(sonny){
+        console.log(sonny);
+        console.log(sonny.message);
+      }
     }
 
   }

@@ -1,3 +1,5 @@
+const ValidationError = require("./error/ValidationError");
+
 class ContactInfo {
     static contactInfoID= 1
       constructor(typeOfContactInfo, valueOfContactInfo) {
@@ -6,12 +8,13 @@ class ContactInfo {
         this.value = valueOfContactInfo
       }
       updateContactInfo(parameterContactInfo, valueOfContactInfo) {
+    
         if (parameterContactInfo === 'type') {
             this.type = valueOfContactInfo;
         } else if (parameterContactInfo === 'value') {
             this.value = valueOfContactInfo;
         } else {
-            return "Invalid Parameter";
+          throw new ValidationError("this is default")
         }
   
         return this;
