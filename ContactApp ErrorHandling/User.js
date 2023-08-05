@@ -16,8 +16,7 @@ class User{
         this.Contacts = [];
      // User.allUsers.push(this); //add the current user object to the all users array
     } 
- 
-    newUser(fullName,gender,age) { 
+  newUser(fullName,gender,age) { 
        try{
         if (typeof fullName != "string") { 
             throw new ValidationError("INvalid fullName")
@@ -32,7 +31,9 @@ class User{
        catch(rasika){
          console.log(rasika.message);
         console.log(rasika.specificMessage);
-        console.log("hee rasika here");   }
+        console.log(rasika.httpStatusCode);
+        // console.log("hee rasika here");  
+     }
         
     } 
  
@@ -52,7 +53,7 @@ class User{
     } 
     getAllUsers(){ 
         try{
-            if (!this.isAdmin){ return UnauthorizedError} 
+            if (!this.isAdmin){ throw new UnauthorizedError("not authorized user")} 
             return User.allUsers
         }
         catch(hellouser){
@@ -326,7 +327,7 @@ class User{
     
  
 let adminObj = User.newAdmin("rasika" ,"female", 23) //creating new admin using User.newAdmin
-let user1 = adminObj.newUser("Pratham", "Male", 34)
+let user1 = adminObj.newUser(675, "Male", 34)
 let user2 = adminObj.newUser("neha", "Female", 40)
 let user3 = adminObj.newUser("yash", "Male", 24)
 // let user1=adminObj.newUser("neha", "female" , 45)
@@ -383,3 +384,5 @@ module.exports = User
 // let user3 = adminObj.newUser("parth")  //creating user3 through admin(adminObj) so it will give true output
 
 // let user2 = user1.newUser("sanu") //creating user2 through user1 so it will give error
+
+ 
